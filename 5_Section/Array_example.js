@@ -84,6 +84,7 @@ function solution(N, stages) {
 // 캐릭터가 특정 필드 안에서 움직인 길이
 /**
 function solution(dirs) {
+    // 시간 복잡도 : O(N)
     let answer = 0; // 이동 거리
     let loc = [5, 5]; // 캐릭터의 현재 위치
 
@@ -100,16 +101,16 @@ function solution(dirs) {
         // 캐릭터 이동
         if(str == 'U') {
             loc[1]++; // 이동
-            locValid(loc) ? loc[1]-- : answer++; // 유효성 체크
+            !locValid(loc) ? loc[1]-- : answer++; // 유효성 체크
         } else if(str == 'D') {
             loc[1]--;
-            locValid(loc) ? loc[1]++ : answer++;
+            !locValid(loc) ? loc[1]++ : answer++;
         } else if(str == 'R') {
             loc[0]++;
-            locValid(loc) ? loc[0]-- : answer++;
+            !locValid(loc) ? loc[0]-- : answer++;
         } else if(str == 'L') {
             loc[0]--;
-            locValid(loc) ? loc[0]++ : answer++; 
+            !locValid(loc) ? loc[0]++ : answer++; 
         }
     }
 
@@ -119,7 +120,8 @@ function solution(dirs) {
 
 // 캐릭터가 특정 필드 안에서 처음 걸어본 길의 길이
 function solution(dirs) {
-    let x = 5; y = 5;
+    // 시간 복잡도 : O(N)
+    let x = 5, y = 5;
     let visited = new Set();
 
     const move = {

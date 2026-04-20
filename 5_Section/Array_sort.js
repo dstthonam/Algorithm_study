@@ -56,6 +56,7 @@ function solution(arr) {
 
 
 // 수포자들의 문제 찍을 때 순위 구하기
+// 시간 복잡도 : O(N)
 function solution(arr) {
     const patterns = [
         [1, 2, 3, 4, 5], // A학생 찍는 패턴
