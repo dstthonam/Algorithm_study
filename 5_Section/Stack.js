@@ -108,3 +108,62 @@ function solution(s) {
     return result;
 }
 
+
+/** ========================================== */
+// 짝지어 제거하기
+// 시간 복잡도 : O(N)
+
+function solution(s) {
+    let stack = [];
+    let len = s.length;
+
+    for(const str of s) {
+        // 문자열이 없는지 확인
+        if(len === 0) {
+            result = 1; 
+            break;
+        }
+
+        if(stack.length > 0 && stack[stack.length - 1] === str) {
+            // 현재 문자와 이전 문자가 동일할 때 스택에서 문자 제거
+            stack.pop();
+        }
+        else {
+            stack.push(str);
+        }
+    }
+
+    return stack.length === 0 ? 1 : 0;
+}
+
+
+
+
+/** ========================================== */
+// 주식 가격
+// 시간 복잡도 : O(N)
+
+function solution(prices) {
+    const len = prices.length;
+    let answer = new Array(len).fill(0); // 가격이 떨어지지 않은 기간을 저장할 배열
+    
+    // 스택을 사용해 이전 가격과 현재 가격 비교
+    const stack = [0]; // 스택 초기화
+    for(let i=1; i < len; i++) {
+        while(stack.length > 0 && prices[i] < prices[stack[stack.length - 1]]) {
+            // 가격이 떨어졌으니 이전 가격의 기간을 계산
+            const j = stack.pop();
+            answer[j] = i - j;
+        }
+
+        stack.push(i);
+    }
+
+    // 스택에 남아 있는 가격들은 가격이 떨어지지 않은 경우
+    while(stack.length > 0) {
+        const j = stack.pop();
+        answer[j] = len - 1 - j;
+    }
+
+    return answer;
+}
