@@ -167,3 +167,83 @@ function solution(prices) {
 
     return answer;
 }
+
+
+
+/** ========================================== */
+// 크레인 인형 뽑기 게임
+
+// 풀이 1
+// 시간 복잡도 : O(N * M)
+function solution(board, moves) {    
+    let answer = 0;
+    const stack = [];
+
+    for(const n of moves) {
+        for(let i=0; i < board.length; i++) {
+            // 뽑을 열에서 첫번째 숫자를 찾아서 pop()처럼 값을 빼서 stack에 넣기
+            if(board[i][n-1] > 0) {
+                stack.push(board[i][n-1]);
+                board[i][n-1] = 0;
+
+                if(stack.length > 1 
+                    && stack[stack.length - 1] === stack[stack.length - 2]) {
+                    stack.pop();
+                    stack.pop();
+                    answer += 2;
+                }
+
+                break;
+            }
+        }
+    }
+
+    return answer;
+}
+
+// 풀이 2
+// 시간 복잡도 : O(N**2 + M)
+function solution(board, moves) {
+    let answer = 0;
+    const stack = [];
+
+    // 열별 스택 생성
+    const cols = Array.from({ length: board.length }, () => []);
+
+    for (let j = 0; j < board.length; j++) {
+        for (let i = board.length - 1; i >= 0; i--) {
+            if (board[i][j] !== 0) {
+                cols[j].push(board[i][j]);
+            }
+        }
+    }
+
+    // moves 처리 (O(M))
+    for (let move of moves) {
+        const col = cols[move - 1];
+
+        if (col.length === 0) continue;
+
+        const doll = col.pop();
+
+        if (stack.length > 0 && stack[stack.length - 1] === doll) {
+            stack.pop();
+            answer += 2;
+        } else {
+            stack.push(doll);
+        }
+    }
+
+    return answer;
+}
+
+//const lanes = [...Array(board[0].length)].map(() => []);
+//const cols = Array.from({ length: board.length }, () => []);
+
+
+
+
+
+
+
+
