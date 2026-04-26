@@ -106,51 +106,107 @@ function solution(n, k) {
 
 /** ========================================== */
 // 기능 개발
-class que {
-    stack = [];
-    first = 0;
-    end = 0;
-
-    push(s) {
-        this.stack[this.stack.length - 1] = s;
-    }
-
-    len() {
-        return this.first - this.end ;
-    }
-
-    pop() {
-        return this.stack(this.first++);
-    }
-}
-
 
 function solution(progresses, speeds) {
-    // 시간 복잡도 O(N x K)
+    // 시간 복잡도 O(N)
     let result = [];
+    const len = progresses.length;
+    const daysLeft = progresses.map((progress, index) => Math.ceil((100 - progress)/speeds[index]));
 
-    while(progresses.length > 0) { 
-        for(let i=0; i < progresses.length; i++) {
-            progresses[i] = progresses[i] + speeds[i];
-
+    let cnt = 0;
+    let patchDay = daysLeft[0];
+    
+    for(let i=0; i < len; i++) {
+        if(daysLeft[i] <= patchDay) {
+            cnt++;
         }
-
-        if(progresses[i])        
+        else {
+            result.push[cnt];
+            cnt = 1;
+            patchDay = daysLeft[i];
+        }
     }
-
-
+    
+    result.push(cnt);
     return result;
 }
 
 
 /** ========================================== */
-// 표 편집(배열 사용)
+// 카드 뭉치
 
-function solution(n, k) {
-    // 시간 복잡도 O(N x K)
+// 풀이 1
+function solution(cards1, cards2, goal) {
+    // 시간 복잡도 O(N)
+    let i = 0, j = 0;
 
+    for(let k=0; k < goal.length; k++) {
+        if(goal[k] == cards1[i]) {
+            i++;
+        } else if (goal[k] == cards2[j]) {
+            j++;
+        } else {
+            return 'No';
+        }
+    }
 
-
-    return result;
+    return 'Yes';
 }
+
+
+// 풀이 2
+class Queue {
+    stack = [];
+    front = 0;
+    end = 0;
+
+    constructor(array) {
+        this.stack = array;
+        this.end = array.length;
+    }
+    
+    push(s) {
+        this.stack[this.end++] = s;
+    }
+
+    pop() { // shift 기능
+        return this.stack[this.front++];
+    }
+    
+    size() {
+        return this.end - this.front;
+    }
+
+    first() {
+        return this.stack[this.front];
+    }
+
+    isEmpty() {
+        return this.front === this.rear;
+    }
+}
+
+function solution(cards1, cards2, goal) {
+    cards1 = new Queue(cards1);
+    cards2 = new Queue(cards2);
+    goal = new Queue(goal);
+
+    while(!goal.isEmpty()) {
+        if(!cards1.isEmpty() && cards1.first() === goal.first()) {
+            cards1.pop();
+            goal.pop();
+        } else if(!cards2.isEmpty() && cards2.first() === goal.first()) {
+            cards2.pop();
+            goal.pop();
+        } else {
+            break;
+        }
+    }
+
+    return goal.isEmpty() ? "Yes" : "No";
+}
+
+
+
+
 
