@@ -12,7 +12,7 @@ function solution(n, k) {
 
     while(que.length > 1) {
         // que에서 현재 선택된 cur에서 k번째 제거
-        cur = (cur + k  1) % que.length;
+        cur = (cur + k) % que.length;
         // cur를 제거된 다음으로 변경
         que.splice(cur, 1);
     }
