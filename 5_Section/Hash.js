@@ -330,29 +330,145 @@ function solution(record) {
 
 // 풀이 1
 // 시간 복잡도 O(N * log N)
-function solution(record) {
+function solution(genres, plays) {
     const result = [];
-    const chkUser = []; // 최종 닉네임 확인용
-    let cmd;
-    
-    for (s in record) {
-        cmd = record[s].split(" ");
-        if (cmd[0] != "Leave") {
-            chkUser[cmd[1]] = cmd[2];
-        }
-    }
-    
-    for (s in record) {
-        cmd = record[s].split(" ");
 
-        if (cmd[0] == "Enter") {
-            result.push(chkUser[cmd[1]] + "님이 들어왔습니다.");
-        } else if (cmd[0] === "Leave") {
-            result.push(chkUser[cmd[1]] + "님이 나갔습니다.");
+    const genreTotal = {};   // 장르별 총 재생수
+    const genreSongs = {};   // 장르별 노래 목록
+
+    // genreTotal, genreSongs 정리
+    for (let i = 0; i < genres.length; i++) {
+        const g = genres[i];
+        const p = plays[i];
+
+        // 총 재생수
+        genreTotal[g] = (genreTotal[g] || 0) + p;
+
+        // 노래 목록
+        if (!genreSongs[g]) {
+            genreSongs[g] = [];
         }
-        
+        genreSongs[g].push([i, p]); // [고유번호, 재생수]
     }
+
+    // 가장 많이 재생된 장르 찾기
+    const sortedGenres = Object.keys(genreTotal)
+                            .sort((a, b) => genreTotal[b] - genreTotal[a]);
+    
+    // 각 장르에서 가장 많이 재생된 2곡까지 선택
+    for (const g of sortedGenres) {
+        const songs = genreSongs[g];
+
+        songs.sort((a, b) => {
+            // 재생수 내림차순, 같으면 인덱스 오름차순
+            if (b[1] === a[1]) return a[0] - b[0];
+            return b[1] - a[1];
+        });
+
+        result.push(...songs.slice(0, 2).map(song => song[0]));
+    }
+
+    return result;
+}
+
+
+
+
+
+
+/** ========================================== */
+// 신고 결과 받기
+
+// 풀이 1
+// 시간 복잡도 O(N)
+function solution(id_list, report, k) {
+    const setReport = {}; // 신고 내용 정리
+    const mailCount = {}; // 신고받은 횟수
+    
+    // 신고 내용 정리
+    for (const s of report) {
+        const [userId, reportedId] = s.split(' ');
+        // 초기화
+        if (!setReport[reportedId]) {
+            setReport[reportedId] = new Set();
+        }
+        // setReport[신고받은 사람] = { 신고한 사람들 }
+        setReport[reportedId].add(userId);
+    }
+    
+    // 신고당한 횟수 계산
+    for (s of Object.keys(setReport)) {
+        if (setReport[s].size >= k) {
+            for (const m of setReport[s]) {
+                mailCount[m] = (mailCount[m] || 0) + 1
+            }
+        }
+    }
+
+    return id_list.map(id => mailCount[id] || 0);
+}
+
+
+
+
+
+
+/** ========================================== */
+// 메뉴 리뉴얼
+
+function combinations(arr, n) {
+    // 1개만 뽑으면 조합을 반환해 탈출
+    if (n === 1) return arr.map(v => [v]);
+
+    const result = [];
+
+    // 순환
+    arr.forEach((fixed, idx) => {
+        const rest = arr.slice(idx + 1);
+        const combis = combinations(rest, n - 1);
+        const combine = combis.map(v => [fixed, ...v]);
+
+        result.push(...combine);
+    });
     
     return result;
+}
+
+// 풀이 1
+// 시간 복잡도 O(N * 2^L)
+function solution(orders, course) {
+    const answer = [];
+
+    // 각 코스 요리 길이
+    for (const c of course) {
+        const counter = {};
+        
+        // 모든 주문
+        for (const order of orders) {
+            // 주문을 배열로 만든 후 정렬
+            const sorted = order.split("").sort();
+            // combinations()로 메뉴 구성을 모두 구함
+            const combs = combinations(sorted, c);
+            
+            // 각 메뉴 구성이 몇 번 주문되었는지 세기
+            for (const comb of combs) {
+                // 배열을 문자열로 변환
+                const key = comb.join('');
+                counter[key] = (counter[key] || 0) + 1;
+            }
+        }
+        
+        const max = Math.max(...Object.values(counter));
+
+        if (max > 1) {
+            for (const key in counter) {
+                if (counter[key] === max) {
+                    answer.push(key);
+                }
+            }
+        }
+    }
+    
+    return answer.sort();
 }
 
