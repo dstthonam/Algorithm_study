@@ -197,27 +197,61 @@ function solution(list, searchList) {
 
 
 /** ========================================== */
-// 
+// 예상 대진표
 
 // 풀이 1
-// 시간 복잡도 O(N)
-function solution(id_list, report, k) {
-    
-    return ;
+// 시간 복잡도 O(log N)
+function solution(N, A, B) {
+    let answer = 0;
+
+    while ((A != B)) {
+        A = Math.ceil(A / 2);
+        B = Math.ceil(B / 2);
+
+        // 라운드 진행수
+        answer++;
+    }
+
+    return answer;
 }
 
 
 
 
 
-
 /** ========================================== */
-// 
+// 다단계 칫솔 판매
+
+function fn_call() {
+    for (const s in seller) {
+        result[seller[s]] = amount[s] * 90;
+
+        referList[enroll[s]] += amount[s] * 10;
+    }
+    let enrollMap = new Map(enroll.map(a), 0);
+    
+    return ;
+}
+
 
 // 풀이 1
-// 시간 복잡도 O(N)
-function solution(id_list, report, k) {
-    
+// 시간 복잡도 O(N * M)
+function solution(enroll, referral, seller, amount) {
+    let result = [];
+    const referList = [];
+
+    for (const s in enroll) {
+        result[enroll[s]] = 0;
+        referList[enroll[s]] = referral[s];
+    }
+
+    for (const s in seller) {
+        result[seller[s]] = amount[s] * 90;
+
+        referList[enroll[s]] += amount[s] * 10;
+    }
+    let enrollMap = new Map(enroll.map(a), 0);
+
     return ;
 }
 
