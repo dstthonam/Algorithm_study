@@ -222,12 +222,11 @@ function solution(N, A, B) {
 /** ========================================== */
 // 다단계 칫솔 판매
 
-function fn_call() {
-    for (const s in seller) {
-        result[seller[s]] = amount[s] * 90;
+function fn_call(K) { // k는 인덱스
+    referList[seller[k]]
+    result[seller[k]] = amount[s] * 90;
 
-        referList[enroll[s]] += amount[s] * 10;
-    }
+    referList[enroll[s]] += amount[s] * 10;
     let enrollMap = new Map(enroll.map(a), 0);
     
     return ;
@@ -237,21 +236,49 @@ function fn_call() {
 // 풀이 1
 // 시간 복잡도 O(N * M)
 function solution(enroll, referral, seller, amount) {
-    let result = [];
-    const referList = [];
+    // parent 오브젝트의 key는 enroll의 노드, value는 referral의 노드로 구성
+    let parent = {};
 
-    for (const s in enroll) {
-        result[enroll[s]] = 0;
-        referList[enroll[s]] = referral[s];
+    for (let i=0; i < enroll.length; i++) {
+        parent[enroll[i]] = referral[i];
+    }
+    
+    let total = {};
+    for (let name of enroll) {
+        total[name] = 0;
     }
 
-    for (const s in seller) {
-        result[seller[s]] = amount[s] * 90;
+    // seller 배열과 amount 배열을 이용해 이익 분배
+    for (let i=0; i < seller.length; i++) {
+        // 판매자가 판매한 총 금액 계산
+        let money = amount[i] * 100;
+        let curName = seller[i];
 
-        referList[enroll[s]] += amount[s] * 10;
+        // 판매자부터 차례대로 상위 노드로 이동하여 이익분배
+        while (money > 0 && curName != "-") {
+            // 현재 판매자가 받을 금액 계산(10% 제외)
+            total[curName] += money - Math.floor(money / 10);
+            curName = parent[curName];
+
+            // 10%를 제외한 금액 계산
+            money = Math.floor(money / 10);
+        }
     }
-    let enrollMap = new Map(enroll.map(a), 0);
 
+    return enroll.map(name => total[name]);
+}
+
+
+
+
+
+/** ========================================== */
+// 
+
+// 풀이 1
+// 시간 복잡도 O(N)
+function solution(id_list, report, k) {
+    
     return ;
 }
 
@@ -269,3 +296,28 @@ function solution(id_list, report, k) {
     return ;
 }
 
+
+
+
+/** ========================================== */
+// 
+
+// 풀이 1
+// 시간 복잡도 O(N)
+function solution(id_list, report, k) {
+    
+    return ;
+}
+
+
+
+
+/** ========================================== */
+// 
+
+// 풀이 1
+// 시간 복잡도 O(N)
+function solution(id_list, report, k) {
+    
+    return ;
+}
